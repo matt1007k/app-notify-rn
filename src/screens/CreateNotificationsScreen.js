@@ -1,31 +1,33 @@
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, AsyncStorage } from "react-native";
 import { Button, Text } from "react-native-paper";
 
-import Icon from "react-native-vector-icons/AntDesign";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-class SettingsScreen extends Component {
+class CreateNotificationsScreen extends Component {
   static navigationOptions = {
-    title: "Configuraciones",
-    drawerIcon: <Icon name="setting" size={25} />
+    title: "Registrar notificacion",
+    drawerIcon: <Icon name="bell-plus" size={25} />
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to Configuraciones screen</Text>
+        <Text style={styles.welcome}>
+          Welcome to create notifications screen
+        </Text>
         <Button
           mode="outlined"
-          onPress={() => this.props.navigation.navigate("Home")}
+          onPress={() => this.props.navigation.navigate("ListN")}
         >
-          Go to Home
+          Go to List
         </Button>
       </View>
     );
   }
 }
 
-export default SettingsScreen;
+export default CreateNotificationsScreen;
 
 const styles = StyleSheet.create({
   container: {

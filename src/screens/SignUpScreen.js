@@ -69,7 +69,7 @@ class SignUpScreen extends Component {
         <Text>Password: {this.state.user.password}</Text>
         <Button
           mode="contained"
-          onPress={() => this.props.navigation.navigate("Login")}
+          onPress={() => this.props.navigation.navigate("App")}
         >
           Home
         </Button>

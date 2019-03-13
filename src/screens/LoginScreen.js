@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Image, AsyncStorage } from "react-native";
 import { Button, TextInput, Title, Text } from "react-native-paper";
+import ButtonRaisedAccent from "../components/button/ButtonRaisedAccent";
 
 const styles = StyleSheet.create({
   container: {
@@ -23,6 +24,9 @@ const styles = StyleSheet.create({
 });
 
 export class LoginScreen extends Component {
+  static navigationOptions = {
+    header: null
+  };
   state = {
     user: {
       email: "",
@@ -59,9 +63,9 @@ export class LoginScreen extends Component {
           onChangeText={password => this.setState({ user: { password } })}
           textContentType="password"
         />
-        <Button mode="contained" color="red" onPress={this._signInAsync}>
-          Ingresar
-        </Button>
+
+        <ButtonRaisedAccent title="Ingresar" OnAction={this._signInAsync} />
+
         <Text>Email: {this.state.user.email}</Text>
         <Text>Password: {this.state.user.password}</Text>
         <Button

@@ -1,26 +1,13 @@
 import React, { Component } from "react";
 import { StyleSheet, View, AsyncStorage } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { Button, Text, FAB } from "react-native-paper";
 
 import Icon from "react-native-vector-icons/AntDesign";
 
 class HomeScreen extends Component {
   static navigationOptions = {
     title: "Inicio",
-    headerRight: (
-      <Icon.Button
-        name="save"
-        size={30}
-        backgroundColor="#fff"
-        color="#000"
-        style={{ paddingRight: 10 }}
-        onPress={this._signOutAsync}
-      />
-    )
-  };
-
-  static defaultNavigationOptions = {
-    title: "Inicio"
+    drawerIcon: <Icon name="home" size={25} />
   };
 
   _signOutAsync = async () => {
@@ -36,6 +23,13 @@ class HomeScreen extends Component {
         <Button mode="outlined" onPress={this._signOutAsync}>
           Go to Login
         </Button>
+        <FAB
+          style={styles.fab}
+          icon="add"
+          backgroundColor="#00B0FF"
+          color="#FFF"
+          onPress={() => this.props.navigation.navigate("AddNoty")}
+        />
       </View>
     );
   }
@@ -54,5 +48,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     margin: 10
+  },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0
   }
 });

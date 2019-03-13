@@ -1,16 +1,13 @@
 import React, { Component } from "react";
-import { StyleSheet, Animated, ScrollView } from "react-native";
 
 import {
   createStackNavigator,
   createAppContainer,
   createSwitchNavigator,
-  createDrawerNavigator,
-  DrawerItems,
-  SafeAreaView
+  createDrawerNavigator
 } from "react-navigation";
 
-import { Provider as ProviderPaper } from "react-native-paper";
+import { Provider as ProviderPaper, DefaultTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 
 import LoginScreen from "./src/screens/LoginScreen";
@@ -20,57 +17,65 @@ import HomeScreen from "./src/screens/HomeScreen";
 import SettingsScreen from "./src/screens/SettingsScreen";
 import WelcomeScreen from "./src/screens/WelcomeScreen";
 
+import CustomDrawerContentComponent from "./src/components/navigations/CustomDrawerContentComponent";
+import CreateNotificationsScreen from "./src/screens/CreateNotificationsScreen";
+import CustomHeaderComponent from "./src/components/navigations/CustomHeaderComponent";
+import ListNotificationsScreen from "./src/screens/ListNotificationsScreen";
+
+{
+  /* <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#00B0FF</color>
+
+    <color name="colorAccentDark">#0091EA</color> */
+}
+
+const theme = {
+  ...DefaultTheme,
+  roundness: 2,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#3F51B5",
+    accent: "#00B0FF",
+    background: "#FFFFFF"
+  }
+};
+
 export default class App extends Component {
   render() {
     return (
-      <ProviderPaper>
+      <ProviderPaper theme={theme}>
         <AppContainer />
       </ProviderPaper>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  }
-});
-
-const CustomDrawerContentComponent = props => {
-  const translateX = props.drawerOpenProgress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-100, 0]
-  });
-
-  return (
-    <ScrollView>
-      <SafeAreaView
-        style={{ flex: 1 }}
-        forceInset={{ top: "always", horizontal: "never" }}
-      >
-        <DrawerItems {...props} />
-      </SafeAreaView>
-    </ScrollView>
-  );
-};
-
 const AppDrawerNavigator = createDrawerNavigator(
   {
     Home: HomeScreen,
-    Settings: SettingsScreen
+    Settings: SettingsScreen,
+    AddNoty: CreateNotificationsScreen,
+    ListNoty: ListNotificationsScreen
   },
   {
     contentComponent: CustomDrawerContentComponent
   }
 );
+
+const titleCustom = titleDefault => {
+  if (titleDefault === "Home") {
+    return "Inicio";
+  } else if (titleDefault === "Settings") {
+    return "Configuraciones";
+  } else if (titleDefault === "AddNoty") {
+    return "Registrar notificacion";
+  } else if (titleDefault === "ListNoty") {
+    return "Lista de notificaciones";
+  } else {
+    return "Inicio";
+  }
+};
 
 const AppStack = createStackNavigator(
   {
@@ -81,24 +86,48 @@ const AppStack = createStackNavigator(
       const { routeName } = navigation.state.routes[navigation.state.index];
       return {
         headerLeft: (
-          <Icon.Button
+          <Icon
             name="menu"
             size={30}
-            backgroundColor="#fff"
-            color="#000"
+            color="#fff"
             style={{ paddingLeft: 10 }}
-            onPress={() => navigation.openDrawer()}
+            onPress={() => navigation.toggleDrawer()}
           />
         ),
-        title: routeName
+        title: titleCustom(routeName),
+        header: props => <CustomHeaderComponent {...props} />,
+        headerStyle: {
+          backgroundColor: "transparent"
+        },
+        headerTitleStyle: {
+          fontWeight: "bold",
+          color: "#fff"
+        },
+        headerTintColor: "#fff",
+        animationEnabled: true
       };
-    }
+    },
+    backgroundColor: "#FFF"
   }
 );
 
 const AuthStack = createStackNavigator({
   Login: LoginScreen,
-  SignUp: SignUpScreen
+  SignUp: {
+    screen: SignUpScreen,
+    navigationOptions: {
+      header: props => <CustomHeaderComponent {...props} />,
+      headerStyle: {
+        backgroundColor: "transparent"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold",
+        color: "#fff"
+      },
+      headerTintColor: "#fff",
+      animationEnabled: true
+    }
+  }
 });
 
 const AppSwitchNavigator = createSwitchNavigator(
